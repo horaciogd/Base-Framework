@@ -2,7 +2,8 @@
 	// incluimos el documento que contiene todas las funciones
 	include ("../inc/config.php");
 	include ("../inc/db.php");
-	//include ("../inc/noTours.php");
+	include ("../inc/base.php");
+	
 	//include ("../inc/noTours-db.php");
 	
 	header("Content-type: text/javascript; charset=utf-8");
@@ -11,8 +12,8 @@
 	$data_user = array();
 	$data = array();
 	$project_id = null;
-	$fields_user = array('name');
-	$fields_data = array('name','type','data');
+	$fields_user = array('user_name');
+	$fields_data = array('data_name','data_type','data');
 	$data_text = '';
 	
 	
@@ -39,7 +40,7 @@
 	// echo "<pre>";
 	if ((count($data)==count($fields_data))&&(count($data_user)==count($fields_user))) {
 	
-		$user = db_select_one($db_tables['users'], $fields_user, $data_user['name']);
+		$user = db_select_one($db_tables['user'], $fields_user, $data_user['name']);
 			if (!$user['error']) {
 				// el usuario existe
 				$user_id = $user['data']['id'];
@@ -48,7 +49,7 @@
 				switch ($error) {
 					case 3:
 						// el usuario no existe
-						$insert = db_insert($db_tables['users'], $data_user);
+						$insert = db_insert($db_tables['user'], $data_user);
 						if (!$insert['error']) {
 							// se ha creado un nuevo usuario
 							$user_id = $insert['data'];
@@ -70,6 +71,15 @@
 			if ($user_id) {
 				$data['user_id'] = $user_id;
 				$data['insert_datetime'] = date("o-m-d G:i:s");
+				$data_value = $data['data'];
+				unset($data['data']);
+				switch ($data['data_type']) {
+					case 'bool':
+						$data['data_'.$data['data_type']] = getBoolValue($data_value);
+        				break;
+        			default:
+        				$data['data_'.$data['data_type']] = $data_value;
+				}
 				$insert = db_insert($db_tables['data'], $data);
 				$new_data = array_merge(array('id'=>$insert['data']), $data);
 				$insert['data'] = $new_data;

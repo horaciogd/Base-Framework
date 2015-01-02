@@ -228,4 +228,17 @@ function comprimir($folder) {
 	}
 }
 
+function getBoolValue($val) {
+	switch (strtolower($val)) {
+		case 'true':
+			return true;
+			break;
+		case 'false':
+			return false;
+			break;
+  		default:
+        	return false;
+	}
+}
+
 ?>
