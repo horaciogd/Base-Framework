@@ -4,31 +4,29 @@
 	include ("../inc/db.php");
 	include ("../inc/base.php");
 	
-	//include ("../inc/noTours-db.php");
-	
 	header("Content-type: text/javascript; charset=utf-8");
 	// header("Content-type: text/html; charset=utf-8");
 	
 	if ( (isset($_POST['user_name'])) && ($_POST['user_name']!="") ) {
 		$user_name = $_POST["user_name"];
 	}
-	if ( (isset($_GET['data_name'])) && ($_GET['data_name']!="") ) {
-		$data_name = $_GET["data_name"];
+	if ( (isset($_POST['data_name'])) && ($_POST['data_name']!="") ) {
+		$data_name = $_POST["data_name"];
 	}
-	if ( (isset($_GET['last'])) && ($_GET['last']=="true") ) {
+	if ( (isset($_POST['last'])) && ($_POST['last']=="true") ) {
 		$last = true;
 	}
-	if ( (isset($_GET['stored'])) && ($_GET['stored']=="true") ) {
+	if ( (isset($_POST['stored'])) && ($_POST['stored']=="true") ) {
 		$stored = true;
 	}
-	if ( (isset($_GET['all'])) && ($_GET['all']=="true") ) {
+	if ( (isset($_POST['all'])) && ($_POST['all']=="true") ) {
 		$all = true;
 	} else {
 		$all = false;
 	}
-	((isset($_GET['timeoffset']))&&($_GET['timeoffset']!=""))  ? $timeoffset = intval($_GET["timeoffset"]) : $timeoffset = 20;
-	if ( (isset($_GET['lang'])) && ($_GET['lang']!="") ) {
-		include ("../inc/lang_".$_GET['lang'].".php");
+	((isset($_POST['timeoffset']))&&($_POST['timeoffset']!=""))  ? $timeoffset = intval($_POST["timeoffset"]) : $timeoffset = 20;
+	if ( (isset($_POST['lang'])) && ($_POST['lang']!="") ) {
+		include ("../inc/lang_".$_POST['lang'].".php");
 	} else {
 		include ("../inc/lang_es.php");
 	}
@@ -59,6 +57,7 @@
 				// $process_id, $data, $ui_msg, $dosql='', $error=FALSE, $type='', $tec_msg='', $error_process=''
 				$return = return_array('exec_get_data', '', $read['msg'], $read['dosql'], true, 3, "There is no recent data being streammed", 'db_select_all');
 			}
+			
 		} else {
 			/// no error handling jet!!!
 			$return = $user;
@@ -113,7 +112,7 @@
 		echo json_encode($return);
 	} else {
 		// error: 10 - POST/GET vars missing.
-		$error = return_array('exec_get_data', '', $write['data_mising'], '', true, 10, "Mising variables: \$_POST['user_name'] = '".$_POST['user_name']."', \$_POST['data_name'] = '".$_POST['data_name']."', \$_POST['last'] = '".$_POST['last']."', \$_POST['stored'] = '".$_POST['stored']."'.", 'exec_get_data');
+		$error = return_array('exec_get_data', '', $write['data_missing'], '', true, 10, "Missing variables: \$_POST['user_name'] = '".$_POST['user_name']."', \$_POST['data_name'] = '".$_POST['data_name']."', \$_POST['last'] = '".$_POST['last']."', \$_POST['stored'] = '".$_POST['stored']."'.", 'exec_get_data');
 		//print_r($error);
 		echo json_encode($error);
 	}

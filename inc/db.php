@@ -416,8 +416,13 @@ function db_update_query($link=FALSE, $table, $data, $id) {
 	global $write;
 	if (is_resource($link)) {
 		// select the element of the db to check if it exists
-		$query_keys = array_keys($id);
-		$query_values = array_values($id);
+		if (is_array($id))	{
+			$query_keys = array_keys($id);
+			$query_values = array_values($id);
+		} else {
+			$query_keys = array("id");
+			$query_values = array($id);
+		}
 		$old_data = db_select_one_query($link, $table, $query_keys, $query_values);
 		if ($old_data['error']) {
 			$old_data['msg'] = $write['error_updating_db_entry'].', '.$old_data['msg'];

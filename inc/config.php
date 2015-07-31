@@ -17,20 +17,25 @@
  */
  
 /* DATABASE INFORMATION */
+
+$auth_key = 'your_auth_key_here';
+
 $db = array(
 	"type" => "mysql",
-	"host" => "**********",
-	"data" => "**********",
-	"user" => "**********",
-	"pass" => "**********"
+	"host" => "localhost",
+	"data" => "your_DB",
+	"user" => "your_user",
+	"pass" => "your_password"
 );
 
+$table_prefix  = 'tp_';
+
 $db_tables = array(
-	"name" => "base_name",
+	"name" => $table_prefix."name",
 );
 
 /* Global variables */
-$root = "http://www.**********/";
+$root = "your web root";
 
 
 ?>
